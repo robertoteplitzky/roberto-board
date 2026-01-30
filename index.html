@@ -5,357 +5,212 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roberto Board</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f5f7;
-      color: #1d1d1f;
-      min-height: 100vh;
-      padding: 24px;
+      background: #f5f5f7; color: #1d1d1f; min-height: 100vh; padding: 24px;
     }
-
-    header {
-      margin-bottom: 32px;
-    }
-
-    h1 {
-      font-size: 28px;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-
-    .subtitle {
-      color: #86868b;
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .stats {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      min-width: 140px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-
-    .stat-value {
-      font-size: 32px;
-      font-weight: 600;
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: #86868b;
-      margin-top: 4px;
-    }
-
-    .project-filter {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 8px 16px;
-      border: none;
-      background: white;
-      border-radius: 20px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-
-    .filter-btn:hover {
-      background: #f0f0f0;
-    }
-
-    .filter-btn.active {
-      background: #1d1d1f;
-      color: white;
-    }
-
-    .board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    @media (max-width: 1200px) {
-      .board {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .board {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .column {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-
-    .column-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .column-title {
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #86868b;
-    }
-
-    .column-count {
-      background: #f5f5f7;
-      color: #86868b;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 12px;
-    }
-
-    .tasks {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 100px;
-    }
-
-    .task {
-      background: #f9f9fb;
-      border-radius: 12px;
-      padding: 16px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .task:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .task-project {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #0071e3;
-      margin-bottom: 6px;
-    }
-
-    .task-title {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-
-    .task-meta {
-      display: flex;
-      gap: 12px;
-      font-size: 12px;
-      color: #86868b;
-    }
-
-    .task-meta span {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .empty-state {
-      color: #c7c7cc;
-      font-size: 13px;
-      text-align: center;
-      padding: 24px;
-    }
-
-    /* Column color accents */
+    header { margin-bottom: 32px; }
+    h1 { font-size: 28px; font-weight: 600; }
+    .subtitle { color: #86868b; font-size: 14px; margin-top: 4px; }
+    .stats { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+    .stat-card { background: white; border-radius: 12px; padding: 20px 24px; min-width: 140px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .stat-value { font-size: 32px; font-weight: 600; }
+    .stat-label { font-size: 13px; color: #86868b; margin-top: 4px; }
+    .project-filter { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .filter-btn { padding: 8px 16px; border: none; background: white; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .filter-btn:hover { background: #f0f0f0; }
+    .filter-btn.active { background: #1d1d1f; color: white; }
+    .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    @media (max-width: 1200px) { .board { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .board { grid-template-columns: 1fr; } }
+    .column { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .column-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0; }
+    .column-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #86868b; }
+    .column-count { background: #f5f5f7; color: #86868b; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+    .tasks { display: flex; flex-direction: column; gap: 12px; min-height: 100px; }
+    .task { background: #f9f9fb; border-radius: 12px; padding: 16px; transition: transform 0.2s, box-shadow 0.2s; }
+    .task:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .task-project { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #0071e3; margin-bottom: 6px; }
+    .task-title { font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 12px; }
+    .task-meta { display: flex; gap: 12px; font-size: 12px; color: #86868b; }
+    .task-meta span { display: flex; align-items: center; gap: 4px; }
+    .empty-state { color: #c7c7cc; font-size: 13px; text-align: center; padding: 24px; }
     .column[data-status="backlog"] .column-title { color: #86868b; }
     .column[data-status="todo"] .column-title { color: #0071e3; }
     .column[data-status="in-progress"] .column-title { color: #ff9500; }
     .column[data-status="done"] .column-title { color: #34c759; }
+    
+    /* Login styles */
+    .login-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: #f5f5f7; display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+    .login-box {
+      background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 360px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08); text-align: center;
+    }
+    .login-box h2 { font-size: 24px; margin-bottom: 8px; }
+    .login-box p { color: #86868b; font-size: 14px; margin-bottom: 24px; }
+    .login-box input {
+      width: 100%; padding: 14px 18px; border: 1px solid #e0e0e0; border-radius: 12px;
+      font-size: 16px; margin-bottom: 16px; outline: none; transition: border-color 0.2s;
+    }
+    .login-box input:focus { border-color: #0071e3; }
+    .login-box button {
+      width: 100%; padding: 14px; border: none; background: #1d1d1f; color: white;
+      border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-box button:hover { background: #333; }
+    .login-error { color: #ff3b30; font-size: 13px; margin-top: 12px; display: none; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🎩 Roberto Board</h1>
-    <p class="subtitle">Task tracker for all projects</p>
-  </header>
-
-  <div class="stats" id="stats"></div>
-
-  <div class="project-filter" id="filter"></div>
-
-  <div class="board" id="board">
-    <div class="column" data-status="backlog">
-      <div class="column-header">
-        <span class="column-title">Backlog</span>
-        <span class="column-count" id="count-backlog">0</span>
-      </div>
-      <div class="tasks" id="tasks-backlog"></div>
+  <!-- Login overlay -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <h2>🎩 Roberto Board</h2>
+      <p>Enter password to continue</p>
+      <input type="password" id="passwordInput" placeholder="Password" autofocus>
+      <button onclick="tryLogin()">Unlock</button>
+      <div class="login-error" id="loginError">Incorrect password</div>
     </div>
-    <div class="column" data-status="todo">
-      <div class="column-header">
-        <span class="column-title">Todo</span>
-        <span class="column-count" id="count-todo">0</span>
-      </div>
-      <div class="tasks" id="tasks-todo"></div>
-    </div>
-    <div class="column" data-status="in-progress">
-      <div class="column-header">
-        <span class="column-title">In Progress</span>
-        <span class="column-count" id="count-in-progress">0</span>
-      </div>
-      <div class="tasks" id="tasks-in-progress"></div>
-    </div>
-    <div class="column" data-status="done">
-      <div class="column-header">
-        <span class="column-title">Done</span>
-        <span class="column-count" id="count-done">0</span>
-      </div>
-      <div class="tasks" id="tasks-done"></div>
+  </div>
+
+  <!-- Main content -->
+  <div id="mainContent" class="hidden">
+    <header>
+      <h1>🎩 Roberto Board</h1>
+      <p class="subtitle">Task tracker for all projects</p>
+    </header>
+    <div class="stats" id="stats"></div>
+    <div class="project-filter" id="filter"></div>
+    <div class="board" id="board">
+      <div class="column" data-status="backlog"><div class="column-header"><span class="column-title">Backlog</span><span class="column-count" id="count-backlog">0</span></div><div class="tasks" id="tasks-backlog"></div></div>
+      <div class="column" data-status="todo"><div class="column-header"><span class="column-title">Todo</span><span class="column-count" id="count-todo">0</span></div><div class="tasks" id="tasks-todo"></div></div>
+      <div class="column" data-status="in-progress"><div class="column-header"><span class="column-title">In Progress</span><span class="column-count" id="count-in-progress">0</span></div><div class="tasks" id="tasks-in-progress"></div></div>
+      <div class="column" data-status="done"><div class="column-header"><span class="column-title">Done</span><span class="column-count" id="count-done">0</span></div><div class="tasks" id="tasks-done"></div></div>
     </div>
   </div>
 
   <script>
     let data = { projects: {}, tasks: [] };
     let activeFilter = 'all';
+    const STORAGE_KEY = 'roberto_board_key';
 
-    async function loadData() {
-      try {
-        const res = await fetch('data.json?' + Date.now());
-        data = await res.json();
-        render();
-      } catch (e) {
-        console.error('Failed to load data:', e);
+    // Crypto helpers
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+    }
+
+    async function decryptData(encryptedB64, password) {
+      const encryptedBytes = Uint8Array.from(atob(encryptedB64), c => c.charCodeAt(0));
+      const salt = encryptedBytes.slice(0, 16);
+      const iv = encryptedBytes.slice(16, 28);
+      const ciphertext = encryptedBytes.slice(28);
+      const key = await deriveKey(password, salt);
+      const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+      return new TextDecoder().decode(decrypted);
+    }
+
+    async function tryLogin() {
+      const password = document.getElementById('passwordInput').value;
+      const success = await loadData(password);
+      if (success) {
+        localStorage.setItem(STORAGE_KEY, password);
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
       }
     }
 
-    function render() {
-      renderStats();
-      renderFilters();
-      renderBoard();
+    async function loadData(password) {
+      try {
+        const res = await fetch('data.enc?' + Date.now());
+        const encryptedB64 = await res.text();
+        const jsonStr = await decryptData(encryptedB64, password);
+        data = JSON.parse(jsonStr);
+        render();
+        return true;
+      } catch (e) {
+        console.error('Decrypt failed:', e);
+        return false;
+      }
     }
+
+    // Check for saved password on load
+    async function init() {
+      const savedPassword = localStorage.getItem(STORAGE_KEY);
+      if (savedPassword) {
+        const success = await loadData(savedPassword);
+        if (success) {
+          document.getElementById('loginOverlay').classList.add('hidden');
+          document.getElementById('mainContent').classList.remove('hidden');
+          return;
+        } else {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+      // Show login
+      document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') tryLogin();
+      });
+    }
+
+    function render() { renderStats(); renderFilters(); renderBoard(); }
 
     function renderStats() {
       const tasks = getFilteredTasks();
       const totalTokens = tasks.reduce((sum, t) => sum + (t.tokens || 0), 0);
       const totalTime = tasks.reduce((sum, t) => sum + (t.timeMinutes || 0), 0);
       const completed = tasks.filter(t => t.status === 'done').length;
-
       document.getElementById('stats').innerHTML = `
-        <div class="stat-card">
-          <div class="stat-value">${tasks.length}</div>
-          <div class="stat-label">Total Tasks</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">${completed}</div>
-          <div class="stat-label">Completed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">${formatTokens(totalTokens)}</div>
-          <div class="stat-label">Tokens Used</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">${formatTime(totalTime)}</div>
-          <div class="stat-label">Time Spent</div>
-        </div>
-      `;
+        <div class="stat-card"><div class="stat-value">${tasks.length}</div><div class="stat-label">Total Tasks</div></div>
+        <div class="stat-card"><div class="stat-value">${completed}</div><div class="stat-label">Completed</div></div>
+        <div class="stat-card"><div class="stat-value">${formatTokens(totalTokens)}</div><div class="stat-label">Tokens Used</div></div>
+        <div class="stat-card"><div class="stat-value">${formatTime(totalTime)}</div><div class="stat-label">Time Spent</div></div>`;
     }
 
     function renderFilters() {
       const projectIds = Object.keys(data.projects);
-      const filterHtml = `
-        <button class="filter-btn ${activeFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All Projects</button>
-        ${projectIds.map(id => `
-          <button class="filter-btn ${activeFilter === id ? 'active' : ''}" onclick="setFilter('${id}')">${data.projects[id].name}</button>
-        `).join('')}
-      `;
-      document.getElementById('filter').innerHTML = filterHtml;
+      document.getElementById('filter').innerHTML = `<button class="filter-btn ${activeFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All Projects</button>` +
+        projectIds.map(id => `<button class="filter-btn ${activeFilter === id ? 'active' : ''}" onclick="setFilter('${id}')">${data.projects[id].name}</button>`).join('');
     }
 
-    function setFilter(filter) {
-      activeFilter = filter;
-      render();
-    }
-
-    function getFilteredTasks() {
-      if (activeFilter === 'all') return data.tasks;
-      return data.tasks.filter(t => t.project === activeFilter);
-    }
+    function setFilter(filter) { activeFilter = filter; render(); }
+    function getFilteredTasks() { return activeFilter === 'all' ? data.tasks : data.tasks.filter(t => t.project === activeFilter); }
 
     function renderBoard() {
-      const statuses = ['backlog', 'todo', 'in-progress', 'done'];
-      const tasks = getFilteredTasks();
-
-      statuses.forEach(status => {
-        const statusTasks = tasks.filter(t => t.status === status);
-        const container = document.getElementById(`tasks-${status}`);
-        const countEl = document.getElementById(`count-${status}`);
-        
-        countEl.textContent = statusTasks.length;
-
-        if (statusTasks.length === 0) {
-          container.innerHTML = '<div class="empty-state">No tasks</div>';
-          return;
-        }
-
-        container.innerHTML = statusTasks.map(task => `
-          <div class="task">
-            <div class="task-project">${data.projects[task.project]?.name || task.project}</div>
-            <div class="task-title">${task.title}</div>
-            <div class="task-meta">
-              <span>🎯 ${formatTokens(task.tokens || 0)}</span>
-              <span>⏱ ${formatTime(task.timeMinutes || 0)}</span>
-            </div>
-          </div>
-        `).join('');
+      ['backlog', 'todo', 'in-progress', 'done'].forEach(status => {
+        const statusTasks = getFilteredTasks().filter(t => t.status === status);
+        document.getElementById(`count-${status}`).textContent = statusTasks.length;
+        document.getElementById(`tasks-${status}`).innerHTML = statusTasks.length === 0 
+          ? '<div class="empty-state">No tasks</div>'
+          : statusTasks.map(task => `<div class="task"><div class="task-project">${data.projects[task.project]?.name || task.project}</div><div class="task-title">${task.title}</div><div class="task-meta"><span>🎯 ${formatTokens(task.tokens || 0)}</span><span>⏱ ${formatTime(task.timeMinutes || 0)}</span></div></div>`).join('');
       });
     }
 
-    function formatTokens(tokens) {
-      if (tokens >= 1000000) return (tokens / 1000000).toFixed(1) + 'M';
-      if (tokens >= 1000) return (tokens / 1000).toFixed(1) + 'K';
-      return tokens.toString();
-    }
+    function formatTokens(t) { return t >= 1000000 ? (t/1000000).toFixed(1)+'M' : t >= 1000 ? (t/1000).toFixed(1)+'K' : t.toString(); }
+    function formatTime(m) { return m < 60 ? m+'m' : (m%60 > 0 ? Math.floor(m/60)+'h '+m%60+'m' : Math.floor(m/60)+'h'); }
 
-    function formatTime(minutes) {
-      if (minutes < 60) return minutes + 'm';
-      const hours = Math.floor(minutes / 60);
-      const mins = minutes % 60;
-      return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
-    }
-
-    // Initial load
-    loadData();
-
-    // Auto-refresh every 30 seconds
-    setInterval(loadData, 30000);
+    init();
+    setInterval(() => {
+      const pw = localStorage.getItem(STORAGE_KEY);
+      if (pw) loadData(pw);
+    }, 30000);
   </script>
 </body>
 </html>

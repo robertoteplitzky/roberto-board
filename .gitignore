@@ -1,0 +1,4 @@
+# Keep raw data local, only push encrypted
+data.json
+encrypt.js
+standalone.html
