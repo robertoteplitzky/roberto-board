@@ -1,0 +1,19 @@
+{
+  "projects": {
+    "roberto-board": {
+      "name": "Roberto Board",
+      "description": "Kanban task tracker for all projects"
+    }
+  },
+  "tasks": [
+    {
+      "id": "rb-001",
+      "project": "roberto-board",
+      "title": "Build initial kanban UI",
+      "status": "in-progress",
+      "tokens": 0,
+      "timeMinutes": 0,
+      "createdAt": "2026-01-30T19:57:00Z"
+    }
+  ]
+}

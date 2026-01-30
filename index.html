@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roberto Board</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .subtitle {
+      color: #86868b;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      min-width: 140px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #86868b;
+      margin-top: 4px;
+    }
+
+    .project-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: none;
+      background: white;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .filter-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .filter-btn.active {
+      background: #1d1d1f;
+      color: white;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 1200px) {
+      .board {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .board {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .column {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .column-title {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #86868b;
+    }
+
+    .column-count {
+      background: #f5f5f7;
+      color: #86868b;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 100px;
+    }
+
+    .task {
+      background: #f9f9fb;
+      border-radius: 12px;
+      padding: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .task:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .task-project {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #0071e3;
+      margin-bottom: 6px;
+    }
+
+    .task-title {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .task-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: #86868b;
+    }
+
+    .task-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .empty-state {
+      color: #c7c7cc;
+      font-size: 13px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* Column color accents */
+    .column[data-status="backlog"] .column-title { color: #86868b; }
+    .column[data-status="todo"] .column-title { color: #0071e3; }
+    .column[data-status="in-progress"] .column-title { color: #ff9500; }
+    .column[data-status="done"] .column-title { color: #34c759; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎩 Roberto Board</h1>
+    <p class="subtitle">Task tracker for all projects</p>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="project-filter" id="filter"></div>
+
+  <div class="board" id="board">
+    <div class="column" data-status="backlog">
+      <div class="column-header">
+        <span class="column-title">Backlog</span>
+        <span class="column-count" id="count-backlog">0</span>
+      </div>
+      <div class="tasks" id="tasks-backlog"></div>
+    </div>
+    <div class="column" data-status="todo">
+      <div class="column-header">
+        <span class="column-title">Todo</span>
+        <span class="column-count" id="count-todo">0</span>
+      </div>
+      <div class="tasks" id="tasks-todo"></div>
+    </div>
+    <div class="column" data-status="in-progress">
+      <div class="column-header">
+        <span class="column-title">In Progress</span>
+        <span class="column-count" id="count-in-progress">0</span>
+      </div>
+      <div class="tasks" id="tasks-in-progress"></div>
+    </div>
+    <div class="column" data-status="done">
+      <div class="column-header">
+        <span class="column-title">Done</span>
+        <span class="column-count" id="count-done">0</span>
+      </div>
+      <div class="tasks" id="tasks-done"></div>
+    </div>
+  </div>
+
+  <script>
+    let data = { projects: {}, tasks: [] };
+    let activeFilter = 'all';
+
+    async function loadData() {
+      try {
+        const res = await fetch('data.json?' + Date.now());
+        data = await res.json();
+        render();
+      } catch (e) {
+        console.error('Failed to load data:', e);
+      }
+    }
+
+    function render() {
+      renderStats();
+      renderFilters();
+      renderBoard();
+    }
+
+    function renderStats() {
+      const tasks = getFilteredTasks();
+      const totalTokens = tasks.reduce((sum, t) => sum + (t.tokens || 0), 0);
+      const totalTime = tasks.reduce((sum, t) => sum + (t.timeMinutes || 0), 0);
+      const completed = tasks.filter(t => t.status === 'done').length;
+
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-value">${tasks.length}</div>
+          <div class="stat-label">Total Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${completed}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${formatTokens(totalTokens)}</div>
+          <div class="stat-label">Tokens Used</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${formatTime(totalTime)}</div>
+          <div class="stat-label">Time Spent</div>
+        </div>
+      `;
+    }
+
+    function renderFilters() {
+      const projectIds = Object.keys(data.projects);
+      const filterHtml = `
+        <button class="filter-btn ${activeFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All Projects</button>
+        ${projectIds.map(id => `
+          <button class="filter-btn ${activeFilter === id ? 'active' : ''}" onclick="setFilter('${id}')">${data.projects[id].name}</button>
+        `).join('')}
+      `;
+      document.getElementById('filter').innerHTML = filterHtml;
+    }
+
+    function setFilter(filter) {
+      activeFilter = filter;
+      render();
+    }
+
+    function getFilteredTasks() {
+      if (activeFilter === 'all') return data.tasks;
+      return data.tasks.filter(t => t.project === activeFilter);
+    }
+
+    function renderBoard() {
+      const statuses = ['backlog', 'todo', 'in-progress', 'done'];
+      const tasks = getFilteredTasks();
+
+      statuses.forEach(status => {
+        const statusTasks = tasks.filter(t => t.status === status);
+        const container = document.getElementById(`tasks-${status}`);
+        const countEl = document.getElementById(`count-${status}`);
+        
+        countEl.textContent = statusTasks.length;
+
+        if (statusTasks.length === 0) {
+          container.innerHTML = '<div class="empty-state">No tasks</div>';
+          return;
+        }
+
+        container.innerHTML = statusTasks.map(task => `
+          <div class="task">
+            <div class="task-project">${data.projects[task.project]?.name || task.project}</div>
+            <div class="task-title">${task.title}</div>
+            <div class="task-meta">
+              <span>🎯 ${formatTokens(task.tokens || 0)}</span>
+              <span>⏱ ${formatTime(task.timeMinutes || 0)}</span>
+            </div>
+          </div>
+        `).join('');
+      });
+    }
+
+    function formatTokens(tokens) {
+      if (tokens >= 1000000) return (tokens / 1000000).toFixed(1) + 'M';
+      if (tokens >= 1000) return (tokens / 1000).toFixed(1) + 'K';
+      return tokens.toString();
+    }
+
+    function formatTime(minutes) {
+      if (minutes < 60) return minutes + 'm';
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+    }
+
+    // Initial load
+    loadData();
+
+    // Auto-refresh every 30 seconds
+    setInterval(loadData, 30000);
+  </script>
+</body>
+</html>
